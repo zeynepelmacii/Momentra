@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Tikitime",
+    "name": "Tik Time",
     "slug": "Tikitime",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,7 +13,12 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.zeynepelmaci.tiktime",
+      "infoPlist": {
+        "NSUserNotificationsUsageDescription": "Tik Time sends notifications for countdown reminders and milestones.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,6 +30,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "@react-native-community/datetimepicker"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ec6eef80-21c8-4a0e-811a-6a81307aa6fd"
+      }
     }
   }
 }
