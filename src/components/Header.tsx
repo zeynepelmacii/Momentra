@@ -11,7 +11,7 @@ export default function Header() {
         resizeMode="contain"
       />
 
-      <Text style={styles.title}>Tiki Time</Text>
+      <Text style={styles.title}>Momentra</Text>
     </View>
   );
 }

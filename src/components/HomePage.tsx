@@ -37,7 +37,7 @@ export default function HomePage({
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyTitle}>No counters yet</Text>
           <Text style={styles.emptyText}>
-            Create your first Tikitime counter.
+            Create your first Momentra counter.
           </Text>
         </View>
       </View>

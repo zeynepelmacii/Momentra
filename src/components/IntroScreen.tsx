@@ -44,7 +44,7 @@ export default function IntroScreen({ onFinish }: IntroScreenProps) {
       }),
     ]).start();
 
-    const text = "Tik Time";
+    const text = "Momentra";
     let index = 0;
 
     const typingInterval = setInterval(() => {
