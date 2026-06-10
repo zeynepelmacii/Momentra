@@ -1,18 +1,18 @@
-Privacy Policy for Tik Time
+Privacy Policy for Momentra
 
 Last updated: June 2026
 
-Tik Time respects your privacy.
+Momentra respects your privacy.
 
 Information We Collect
 
-Tik Time does not require account creation and does not collect personal information such as your name, email address, phone number, or location.
+Momentra does not require account creation and does not collect personal information such as your name, email address, phone number, or location.
 
 The app stores countdowns, count-ups, and related settings locally on your device.
 
 Notifications
 
-If you enable notifications, Tik Time may send local notifications related to your countdowns, milestones, and reminders.
+If you enable notifications, Momentra may send local notifications related to your countdowns, milestones, and reminders.
 
 Notification data is processed only on your device and is not transmitted to any external servers.
 
@@ -20,17 +20,17 @@ Data Storage
 
 All app data is stored locally on your device.
 
-Tik Time does not currently use cloud storage or external databases.
+Momentra does not currently use cloud storage or external databases.
 
 Third-Party Services
 
-Tik Time may use platform services provided by Apple and Expo to support app functionality and distribution.
+Momentra may use platform services provided by Apple and Expo to support app functionality and distribution.
 
 These services may collect technical information according to their own privacy policies.
 
 Children's Privacy
 
-Tik Time does not knowingly collect personal information from children.
+Momentra does not knowingly collect personal information from children.
 
 Changes to This Privacy Policy
 
