@@ -102,6 +102,7 @@ export default function CounterCard({
       <View style={styles.header}>
         <View style={{ flex: 1 }}>
           <View style={styles.titleRow}>
+            <Text style={styles.title}>{counter.icon ?? "⭐"}</Text>
             <Text
               style={[
                 styles.title,

@@ -1,5 +1,6 @@
 import {
   Alert,
+  Modal,
   Pressable,
   StyleSheet,
   Text,
@@ -26,6 +27,12 @@ const durationOptions = [
   { label: "60 days", ms: 60 * 24 * 60 * 60 * 1000 },
   { label: "90 days", ms: 90 * 24 * 60 * 60 * 1000 },
 ];
+
+const iconOptions = [
+  "❤️", "🎂", "🏖️", "✈️",
+  "💼", "🎓","✨",
+];
+
 
 function getDefaultTitle(date: Date) {
   const formattedDate = date.toLocaleDateString("en-GB", {
@@ -58,6 +65,14 @@ export default function CounterForm({
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [visibleMonth, setVisibleMonth] = useState(initialDate);
   const [selectedQuick, setSelectedQuick] = useState<string | null>(null);
+  const [selectedIcon, setSelectedIcon] = useState(editingCounter?.icon ?? "⭐");
+  const [customIconModalVisible, setCustomIconModalVisible] = useState(false);
+  const [customIcon, setCustomIcon] = useState("");
+  const [customIcons, setCustomIcons] = useState<string[]>(
+    editingCounter?.icon && !iconOptions.includes(editingCounter.icon)
+      ? [editingCounter.icon]
+      : []
+  );
 
   const today = new Date();
   const isCompleted =
@@ -121,6 +136,7 @@ export default function CounterForm({
       onUpdateCounter({
         ...editingCounter,
         title: finalTitle,
+        icon: selectedIcon,
         targetDate: selectedDate.toISOString(),
       });
 
@@ -131,14 +147,108 @@ export default function CounterForm({
       id: `${Date.now()}-${Math.random()}`,
       type,
       title: finalTitle,
+      icon: selectedIcon,
       targetDate: selectedDate.toISOString(),
       createdAt: new Date().toISOString(),
     });
   }
 
   return (
+    
     <View style={styles.form}>
+
+      
+      <Text style={styles.label}>Icon</Text>
+
+      <View style={styles.iconGrid}>
+        {[...iconOptions, ...customIcons].map((icon) => {
+          const isSelected = selectedIcon === icon;
+
+          return (
+            <Pressable
+              key={icon}
+              onPress={() => setSelectedIcon(icon)}
+              style={({ pressed }) => [
+                styles.iconButton,
+                isSelected && styles.selectedIconButton,
+                pressed && styles.pressedButton,
+              ]}
+            >
+              <Text style={styles.iconText}>{icon}</Text>
+            </Pressable>
+          );
+        })}
+
+        <Pressable
+          onPress={() => {
+            setCustomIcon(selectedIcon);
+            setCustomIconModalVisible(true);
+          }}
+          style={({ pressed }) => [
+            styles.iconButton,
+            styles.customIconButton,
+            pressed && styles.pressedButton,
+          ]}
+        >
+          <Text style={styles.customIconButtonText}>+</Text>
+        </Pressable>
+      </View>
+
+      <Modal
+        visible={customIconModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setCustomIconModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>Add your icon</Text>
+            <Text style={styles.modalText}>
+              Add one emoji to personalize your counter.
+            </Text>
+
+            <TextInput
+              value={customIcon}
+              onChangeText={(text) => setCustomIcon(text.slice(0, 4))}
+              placeholderTextColor={theme.colors.mutedText}
+              style={styles.customIconInput}
+              maxLength={4}
+            />
+
+            <View style={styles.modalActions}>
+              <Pressable
+                onPress={() => setCustomIconModalVisible(false)}
+                style={styles.modalCancelButton}
+              >
+                <Text style={styles.modalCancelText}>Cancel</Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => {
+                  const cleanIcon = customIcon.trim();
+
+                  if (!cleanIcon) {
+                    Alert.alert("Icon required", "Please add an emoji.");
+                    return;
+                  }
+                  setCustomIcons((prev) =>
+                    prev.includes(cleanIcon) ? prev : [...prev, cleanIcon]
+                  );
+                  setSelectedIcon(cleanIcon);
+                  setCustomIconModalVisible(false);
+                }}
+                style={styles.modalSaveButton}
+              >
+                <Text style={styles.modalSaveText}>Save</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <Text style={styles.label}>Title</Text>
+
+
 
       <TextInput
         value={title}
@@ -299,4 +409,96 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+iconGrid: {
+  flexDirection: "row",
+  flexWrap: "wrap",
+  gap: 10,
+},
+iconButton: {
+  width: 48,
+  height: 48,
+  borderRadius: 16,
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: theme.colors.card,
+  borderWidth: 1,
+  borderColor: theme.colors.border,
+},
+selectedIconButton: {
+  borderColor: theme.colors.primary,
+  backgroundColor: theme.colors.primarySoft,
+  transform: [{ scale: 1.06 }],
+},
+customIconButton: {
+  borderStyle: "dashed",
+},
+iconText: {
+  fontSize: 24,
+},
+customIconButtonText: {
+  fontSize: 26,
+  fontWeight: "700",
+  color: theme.colors.primary,
+},
+modalOverlay: {
+  flex: 1,
+  backgroundColor: "rgba(15, 23, 42, 0.35)",
+  justifyContent: "center",
+  padding: 24,
+},
+modalCard: {
+  backgroundColor: theme.colors.card,
+  borderRadius: 24,
+  padding: 20,
+  borderWidth: 1,
+  borderColor: theme.colors.border,
+},
+modalTitle: {
+  fontSize: 20,
+  fontWeight: "800",
+  color: theme.colors.text,
+  marginBottom: 6,
+},
+modalText: {
+  fontSize: 14,
+  color: theme.colors.mutedText,
+  marginBottom: 16,
+},
+customIconInput: {
+  height: 64,
+  borderRadius: 18,
+  borderWidth: 1,
+  borderColor: theme.colors.border,
+  textAlign: "center",
+  fontSize: 30,
+  backgroundColor: theme.colors.primarySoft,
+  color: theme.colors.text,
+},
+modalActions: {
+  flexDirection: "row",
+  gap: 10,
+  marginTop: 18,
+},
+modalCancelButton: {
+  flex: 1,
+  paddingVertical: 13,
+  borderRadius: 16,
+  alignItems: "center",
+  backgroundColor: theme.colors.primarySoft,
+},
+modalSaveButton: {
+  flex: 1,
+  paddingVertical: 13,
+  borderRadius: 16,
+  alignItems: "center",
+  backgroundColor: theme.colors.primary,
+},
+modalCancelText: {
+  fontWeight: "700",
+  color: theme.colors.primary,
+},
+modalSaveText: {
+  fontWeight: "700",
+  color: theme.colors.white,
+},
 });
