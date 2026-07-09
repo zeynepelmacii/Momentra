@@ -46,6 +46,7 @@ export default function CounterTypeCard({
 const styles = StyleSheet.create({
   card: {
     minHeight: 230,
+    height: 240,
     borderRadius: 32,
     padding: 26,
     justifyContent: "space-between",
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   },
 
   topContent: {
-    gap: 16,
+    gap: 6,
   },
 
   badge: {

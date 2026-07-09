@@ -1,5 +1,13 @@
-import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRef, useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { theme } from "../theme";
 import CounterForm from "./CounterForm";
 import CounterTypeCard from "./CounterTypeCard";
@@ -26,6 +34,17 @@ export default function CreateCounterScreen({
     editingCounter ? editingCounter.type : null
   );
 
+  const formScrollRef = useRef<ScrollView>(null);
+
+  function scrollToTitleInput() {
+    setTimeout(() => {
+      formScrollRef.current?.scrollTo({
+        y: 100,
+        animated: true,
+      });
+    }, 250);
+  }
+
   if (selectedType) {
     const title = selectedType === "countdown" ? "Countdown" : "Count-up";
     const description =
@@ -34,11 +53,18 @@ export default function CreateCounterScreen({
         : "Track how much time has passed since a past moment.";
 
     return (
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={20}
       >
+        <ScrollView
+          ref={formScrollRef}
+          style={styles.container}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
         <View style={styles.backgroundBlobOne} />
         <View style={styles.backgroundBlobTwo} />
 
@@ -75,9 +101,11 @@ export default function CreateCounterScreen({
             editingCounter={editingCounter}
             onCreateCounter={onCreateCounter}
             onUpdateCounter={onUpdateCounter}
+            onTitleFocus={scrollToTitleInput}
           />
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -132,6 +160,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
   },
+
+  keyboardContainer: {
+  flex: 1,
+},
 
   content: {
     flexGrow: 1,

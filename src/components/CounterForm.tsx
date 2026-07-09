@@ -1,5 +1,6 @@
 import {
   Alert,
+  Keyboard,
   Modal,
   Pressable,
   StyleSheet,
@@ -18,6 +19,7 @@ type Props = {
   editingCounter: Counter | null;
   onCreateCounter: (counter: Counter) => void;
   onUpdateCounter: (counter: Counter) => void;
+  onTitleFocus?: () => void;
 };
 
 const durationOptions = [
@@ -54,6 +56,7 @@ export default function CounterForm({
   editingCounter,
   onCreateCounter,
   onUpdateCounter,
+  onTitleFocus,
 }: Props) {
   const initialDate = editingCounter
     ? new Date(editingCounter.targetDate)
@@ -248,15 +251,29 @@ export default function CounterForm({
 
       <Text style={styles.label}>Title</Text>
 
+      <View style={styles.titleInputWrapper}>
+        <TextInput
+          value={title}
+          onChangeText={setTitle}
+          placeholder="Birthday, Vacation, Exam..."
+          placeholderTextColor={theme.colors.mutedText}
+          style={styles.titleInput}
+          returnKeyType="done"
+          onSubmitEditing={Keyboard.dismiss}
+          blurOnSubmit
+          onFocus={onTitleFocus}
+        />
 
-
-      <TextInput
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Example: Birthday, Vacation, Exam"
-        placeholderTextColor={theme.colors.mutedText}
-        style={styles.input}
-      />
+        <Pressable
+          onPress={Keyboard.dismiss}
+          style={({ pressed }) => [
+            styles.keyboardDoneButton,
+            pressed && styles.pressedButton,
+          ]}
+        >
+          <Text style={styles.keyboardDoneText}>✓</Text>
+        </Pressable>
+      </View>
 
       <Text style={styles.label}>Date</Text>
 
@@ -335,8 +352,10 @@ export default function CounterForm({
 
 const styles = StyleSheet.create({
   form: {
-    marginTop: 24,
+    paddingVertical: 3,
+    paddingHorizontal: 5,
   },
+
   label: {
     fontSize: 15,
     fontWeight: "700",
@@ -412,7 +431,7 @@ const styles = StyleSheet.create({
 iconGrid: {
   flexDirection: "row",
   flexWrap: "wrap",
-  gap: 10,
+  gap:15,
 },
 iconButton: {
   width: 48,
@@ -501,4 +520,42 @@ modalSaveText: {
   fontWeight: "700",
   color: theme.colors.white,
 },
+
+titleInputWrapper: {
+  flexDirection: "row",
+  alignItems: "center",
+  backgroundColor: theme.colors.card,
+  borderWidth: 1,
+  borderColor: theme.colors.border,
+  borderRadius: 18,
+  marginTop: 12,
+  paddingLeft: 16,
+  paddingRight: 8,
+
+  shadowColor: "#000",
+  shadowOpacity: 0.04,
+  shadowRadius: 10,
+  shadowOffset: { width: 0, height: 4 },
+  elevation: 2,
+},
+titleInput: {
+  flex: 1,
+  paddingVertical: 15,
+  fontSize: 16,
+  color: theme.colors.text,
+},
+keyboardDoneButton: {
+  width: 36,
+  height: 36,
+  borderRadius: 18,
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: theme.colors.primarySoft,
+},
+keyboardDoneText: {
+  color: theme.colors.primary,
+  fontSize: 18,
+  fontWeight: "900",
+},
+
 });

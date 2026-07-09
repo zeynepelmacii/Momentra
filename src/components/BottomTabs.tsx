@@ -50,8 +50,8 @@ export default function BottomTabs({ activeTab, onChangeTab }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
-    marginTop: 24,
+    marginHorizontal: 15,
+    marginTop: 14,
     padding: 3,
     backgroundColor: theme.colors.tabBackground,
     borderRadius: 20,
