@@ -353,7 +353,6 @@ export default function CounterForm({
 const styles = StyleSheet.create({
   form: {
     paddingVertical: 3,
-    paddingHorizontal: 5,
   },
 
   label: {
